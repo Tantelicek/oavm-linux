@@ -20,6 +20,8 @@
                 # Import klasického configuration.nix, jeho nastavení tak stále platí
                 ./configuration.nix
 
+                ./hardware-configuration.nix
+
                 ];
             };
         };
