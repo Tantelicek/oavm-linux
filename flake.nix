@@ -6,7 +6,7 @@
     inputs = {
 
         # NixOS officiální a aktuální stabilní zdroj balíčků 25.05
-        nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";.
+        nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
 
     };
 
