@@ -1,6 +1,6 @@
 # Základní konfigurace OAVM-Linux
 
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 
 {
   imports =
@@ -89,8 +89,8 @@
   services.spice-vdagentd.enable = true;
 
   # Taky TEMPORARY VirtualBox additions
-  virtualisation.virtualbox.guest.enable = true;
-  virtualisation.virtualbox.guest.dragAndDrop = true;
+   #virtualisation.virtualbox.guest.enable = true;
+   #virtualisation.virtualbox.guest.dragAndDrop = true;
 
   # Uživatelský účet student (nastavení hesla přes passwd)
   users.users.student = {
@@ -121,10 +121,18 @@
   git
   vim
   wget
+  pkgs.vscode-fhs
+  alejandra
+  nixpkgs-fmt
+  pkgs.nixd  
   # Taky QEMU součásti TEMPORARY
   spice-vdagent
   spice-autorandr
   ];
+
+  # Konfigurace potřebná pro nixd
+  #nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
+
 
   # Povolování servisů (např OpenSSH daemon)
 
