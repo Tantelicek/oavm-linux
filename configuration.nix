@@ -1,12 +1,14 @@
 # Základní konfigurace OAVM-Linux
-
-{ config, pkgs, inputs, ... }:
-
 {
-  imports =
-    [ # Import hardware configu
-      ./hardware-configuration.nix
-    ];
+  config,
+  pkgs,
+  inputs,
+  ...
+}: {
+  imports = [
+    # Import hardware configu
+    ./hardware-configuration.nix
+  ];
 
   # Bootloader
   boot.loader.systemd-boot.enable = true;
@@ -45,7 +47,7 @@
 
   # Povolení X11 (s Wayland kompozitorem není nutné, necháváme pro kompatibilitu)
   services.xserver.enable = true;
-  services.xserver.videoDrivers = [ "qxl" ];
+  services.xserver.videoDrivers = ["qxl"];
 
   # Povoluje KDE Plasmu jako desktop a SDDM jako login/desktop manager
   services.displayManager.sddm.enable = true;
@@ -89,18 +91,18 @@
   services.spice-vdagentd.enable = true;
 
   # Taky TEMPORARY VirtualBox additions
-   #virtualisation.virtualbox.guest.enable = true;
-   #virtualisation.virtualbox.guest.dragAndDrop = true;
+  #virtualisation.virtualbox.guest.enable = true;
+  #virtualisation.virtualbox.guest.dragAndDrop = true;
 
   # Uživatelský účet student (nastavení hesla přes passwd)
   users.users.student = {
     isNormalUser = true;
     description = "Student OAVM";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = ["networkmanager" "wheel"];
     packages = with pkgs; [
-    # Tento package management nepoužívat (aktuálně TEMPORARY)
+      # Tento package management nepoužívat (aktuálně TEMPORARY)
       kdePackages.kate
-    #  thunderbird
+      #  thunderbird
     ];
   };
 
@@ -114,25 +116,25 @@
   # $ nix search wget
 
   # Povolení Flakes (jsou považovány za experimental funkci, my je ale potřebujeme)
-    nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = ["nix-command" "flakes"];
 
   # Blaíčky nainstalované na systémové úrovni (dávat přednost flake.nix)
   environment.systemPackages = with pkgs; [
-  git
-  vim
-  wget
-  pkgs.vscode-fhs
-  alejandra
-  nixpkgs-fmt
-  pkgs.nixd  
-  # Taky QEMU součásti TEMPORARY
-  spice-vdagent
-  spice-autorandr
+    git
+    vim
+    wget
+    pkgs.vscode-fhs
+    alejandra
+    nixpkgs-fmt
+    pkgs.nixd
+    discord
+    # Taky QEMU součásti TEMPORARY
+    spice-vdagent
+    spice-autorandr
   ];
 
   # Konfigurace potřebná pro nixd
   #nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
-
 
   # Povolování servisů (např OpenSSH daemon)
 
@@ -166,5 +168,4 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "25.05"; # Did you read the comment?
-
 }
