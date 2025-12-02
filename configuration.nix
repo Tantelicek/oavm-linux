@@ -128,6 +128,7 @@
     nixpkgs-fmt
     pkgs.nixd
     discord
+    inputs.imunes.packages.${pkgs.system}.imunes-before-break
     # Taky QEMU součásti TEMPORARY
     spice-vdagent
     spice-autorandr
