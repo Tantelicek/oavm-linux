@@ -13,12 +13,13 @@
   # Bootloader
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  
 
   # Kernel (nejnovější stable)
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
   networking.hostName = "oavm-linux"; # Jméno na síti (hostname)
-  # networking.wireless.enable = true;  # Bezdratové připojení (wpa_supplicant)
+  #networking.wireless.enable = true; # Bezdratové připojení (wpa_supplicant)
 
   # Síťová proxy (POZNÁMKA: zeptat se, zda bude nutná)
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -123,19 +124,59 @@
     git
     vim
     wget
-    pkgs.vscode-fhs
+    vscode-fhs
     alejandra
     nixpkgs-fmt
-    pkgs.nixd
+    nixd
     discord
+    wireshark
     inputs.imunes.packages.${pkgs.system}.imunes-before-break
     # Taky QEMU součásti TEMPORARY
     spice-vdagent
     spice-autorandr
   ];
 
+  #Fonty
+  fonts.packages = with pkgs; [
+    dm-sans
+  ];
+
   # Konfigurace potřebná pro nixd
-  #nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
+  nix.nixPath = ["nixpkgs=${inputs.nixpkgs}"];
+
+  #Povolení wiresharku (ZEPTAT SE NA POVOLENÍ NETWORK A USB CAPTURINGU!)
+  programs.wireshark.enable = true;
+  programs.wireshark.dumpcap.enable = true;
+  programs.wireshark.usbmon.enable = false;
+
+  #Plymouth - boot animace (JEŠTĚ PROKONZULTOVAT + PŘIDAT OAVM LOGO)
+  boot = {
+    plymouth = {
+      enable = true;
+      theme = "deus_ex";
+      themePackages = with pkgs; [
+        # By default we would install all themes
+        (adi1090x-plymouth-themes.override {
+          selected_themes = ["deus_ex"];
+        })
+      ];
+    };
+
+    # Enable "Silent boot"
+    consoleLogLevel = 3;
+    initrd.verbose = false;
+    kernelParams = [
+      "quiet"
+      "splash"
+      "boot.shell_on_fail"
+      "udev.log_priority=3"
+      "rd.systemd.show_status=auto"
+    ];
+  };
+
+    # Skrytí nabídky systemd-boot.
+    # Možno zobrazit zmáčknutím jakékoliv klávesy
+    boot.loader.timeout = 0;
 
   # Povolování servisů (např OpenSSH daemon)
 

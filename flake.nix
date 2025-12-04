@@ -20,7 +20,6 @@
     ...
   } @ inputs: let
     pkgs = nixpkgs.legacyPackages.x86_64-linux;
-
   in {
     nixosConfigurations.oavm-linux = nixpkgs.lib.nixosSystem {
       #system = "x86_64-linux";
@@ -33,7 +32,6 @@
       ];
     };
 
-     
     packages.x86_64-linux.default = pkgs.hello;
 
     packages.x86_64-linux.imunes = imunes.packages.x86_64-linux.imunes-before-break;
