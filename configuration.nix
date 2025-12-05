@@ -178,6 +178,15 @@
     # Možno zobrazit zmáčknutím jakékoliv klávesy
     boot.loader.timeout = 0;
 
+  
+  programs.nh = {
+    enable = true;
+    clean.enable = true;
+    clean.extraArgs = "--keep-since 7d --keep 3";
+    flake = "/home/student/oavm-linux/oavm-linux"; # sets NH_OS_FLAKE variable for you
+  };
+
+
   # Povolování servisů (např OpenSSH daemon)
 
   # Enable the OpenSSH daemon.
