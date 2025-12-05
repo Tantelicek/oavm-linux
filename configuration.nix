@@ -6,8 +6,7 @@
   ...
 }: {
   imports = [
-    # Import hardware configu
-    ./hardware-configuration.nix
+
   ];
 
   # Bootloader
@@ -144,7 +143,7 @@
   # Konfigurace potřebná pro nixd
   nix.nixPath = ["nixpkgs=${inputs.nixpkgs}"];
 
-  #Povolení wiresharku (ZEPTAT SE NA POVOLENÍ NETWORK A USB CAPTURINGU!)
+  #Povolení wiresharku
   programs.wireshark.enable = true;
   programs.wireshark.dumpcap.enable = true;
   programs.wireshark.usbmon.enable = false;

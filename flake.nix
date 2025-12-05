@@ -21,13 +21,25 @@
   } @ inputs: let
     pkgs = nixpkgs.legacyPackages.x86_64-linux;
   in {
-    nixosConfigurations.oavm-linux = nixpkgs.lib.nixosSystem {
+    nixosConfigurations.oavm-linux-d = nixpkgs.lib.nixosSystem {
       #system = "x86_64-linux";
       specialArgs = {inherit inputs;};
       modules = [
         # Import klasického configuration.nix, jeho nastavení tak stále platí
         ./configuration.nix
+        ./hardware/dominik-pc/hardware-configuration.nix
+        #{nix.settings.experimental-features = ["nix-command" "flakes"];}
+      ];
+    };
 
+        
+    nixosConfigurations.oavm-linux-h = nixpkgs.lib.nixosSystem {
+      #system = "x86_64-linux";
+      specialArgs = {inherit inputs;};
+      modules = [
+        # Import klasického configuration.nix, jeho nastavení tak stále platí
+        ./configuration.nix
+        ./hardware/honza-vm/hardware-configuration.nix 
         #{nix.settings.experimental-features = ["nix-command" "flakes"];}
       ];
     };
