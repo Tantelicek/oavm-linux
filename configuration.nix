@@ -83,14 +83,14 @@
   # Povolení touchpadu na X11 (povolenoo defaultně ve většině desktopManager).
   # services.xserver.libinput.enable = true;
 
-  #TEMPORARY - Qemu/Boxes agenti a ovladače (přesunout do samostatného souboru)
-  services.spice-autorandr.enable = true;
-  services.qemuGuest.enable = true;
-  services.spice-vdagentd.enable = true;
+  #TEMPORARY - Qemu/Boxes agenti a ovladače (přesunout do samostatného souboru) - již nepotřebné
+  # services.spice-autorandr.enable = true;
+  # services.qemuGuest.enable = true;
+  # services.spice-vdagentd.enable = true;
 
-  # Taky TEMPORARY VirtualBox additions
-  #virtualisation.virtualbox.guest.enable = true;
-  #virtualisation.virtualbox.guest.dragAndDrop = true;
+  # VirtualBox additions - potřebné pro virtualizaci
+  virtualisation.virtualbox.guest.enable = true;
+  virtualisation.virtualbox.guest.dragAndDrop = true;
 
   # Uživatelský účet student (nastavení hesla přes passwd)
   users.users.student = {
