@@ -6,13 +6,11 @@
   ...
 }: {
   imports = [
-
   ];
 
   # Bootloader
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  
 
   # Kernel (nejnovější stable)
   boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -107,7 +105,12 @@
   };
 
   # Instalace firefoxu (nejspíše přesuneme do flaku)
-  programs.firefox.enable = true;
+  programs.firefox = {
+    enable = true;
+    preferences = {
+      "widget.use-xdg-desktop-portal.file-picker" = 1;
+    };
+  };
 
   # Povolení nesvobodných (unfree) balíčků
   nixpkgs.config.allowUnfree = true;
@@ -120,19 +123,59 @@
 
   # Blaíčky nainstalované na systémové úrovni (dávat přednost flake.nix)
   environment.systemPackages = with pkgs; [
+    #Základní systémové
     git
+    sourcegit
     vim
     wget
+    mc
+    htop
+
+    #VScode
     vscode-fhs
+
+    #NixOS nástroje
     alejandra
     nixpkgs-fmt
     nixd
+
+    #TEMPORARY
     discord
+
+    #Sítě
     wireshark
+    tshark
+    filius
+    nmap
+    zenmap
+    netcat
+    nikto
+    burpsuite
+    inputs.nixpkgs-unstable.legacyPackages.${pkgs.system}.sqlmap
     inputs.imunes.packages.${pkgs.system}.imunes-before-break
-    # Taky QEMU součásti TEMPORARY
-    spice-vdagent
-    spice-autorandr
+
+    #OBD
+    kdePackages.kleopatra
+    gnupg1
+
+    #Grafika + video
+    gimp-with-plugins
+    inkscape-with-extensions
+    kdePackages.kdenlive
+    haruna
+    vlc
+
+    #OIS
+    drawio
+
+    #Programování
+    scenebuilder
+    netbeans
+    python314
+
+    #Základní desktop programy
+    inputs.nixpkgs-unstable.legacyPackages.${pkgs.system}.onlyoffice-desktopeditors
+    microsoft-edge
   ];
 
   #Fonty
@@ -173,18 +216,16 @@
     ];
   };
 
-    # Skrytí nabídky systemd-boot.
-    # Možno zobrazit zmáčknutím jakékoliv klávesy
-    boot.loader.timeout = 0;
+  # Skrytí nabídky systemd-boot.
+  # Možno zobrazit zmáčknutím jakékoliv klávesy
+  boot.loader.timeout = 0;
 
-  
   programs.nh = {
     enable = true;
     clean.enable = true;
     clean.extraArgs = "--keep-since 7d --keep 3";
     flake = "/home/student/oavm-linux/oavm-linux"; # sets NH_OS_FLAKE variable for you
   };
-
 
   # Povolování servisů (např OpenSSH daemon)
 
