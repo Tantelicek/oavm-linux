@@ -1,0 +1,59 @@
+Prezentace
+Papír
+Custom fastfetch (oavm smajlík ascii logo, obecné info, stylizace a barvy)
+Test základních příkazů (https://youtu.be/QhvDvpyvPSE?si=E7IGBGZlmcU6CRQh)
+Tvorba liveiso (blokace disků, hw-con.nix, secure boot, komprimace, atd.)
+OAVM Logo na Plymouth (overlay, mbo logo možná)
+IPXE server (+ moužná proxy)
+
+firefox (policies, extensions, about)
+vscode (extensions, settings.json do home manageru)
+imunes (zástupce v HOME MANAGER)
+smokeping (vytvořit systemd service podle: https://discourse.nixos.org/t/smokeping-service/66419)
+netbeans + jdk + jre + database + web server(apache) + glassfish/tomcat
+C# ide ( + testnout .net sdk pro linux)
+onlyoffice (home-manager/option/programs.onlyoffice.settings - scaling 100%)
+kleopatra + gnugp atd. (otestovat)
+CUSTOM FETCH PROGRAM (screenfetch, fastfech)
+php xampp (localserver)
+python (zeptat se na pip)
+git (možná nějaký defaultní config?)
+
+HOME MANAGER
+Plasma-manger config
+To je: -vzhled taskbaru (včetně složek pro předměty, logo startu smajlík atd.)
+-wallpaper, ikonky
+-webové zástupce
+-info o pc v settings
+-projet nastavení plasmy, nastavit tak aby to dávalo smysl
+-konsole - autorun screenfetch
+-configy programů co vyžadují home manger
+-kdyžtak přidat něco dalšího xd
+
+Hotové (nejspíš :D)
+vlc/haruna
+midnight commander
+kdenlive
+gimp + inkscape
+drawio
+edge
+nmap
+filius
+wireshark
+tshark
+scene builder 
+git gui (sourcegit)
+nikto + burpsuite + sqlmap
+libreoffice
+netcat (používáme libressl variantu)
+
+#Taky QEMU součásti TEMPORARY
+    spice-vdagent
+    spice-autorandr
+
+  #TEMPORARY - Qemu/Boxes agenti a ovladače (přesunout do samostatného souboru) - již nepotřebné
+  # services.spice-autorandr.enable = true;
+  # services.qemuGuest.enable = true;
+  # services.spice-vdagentd.enable = true;
+
+   services.xserver.videoDrivers = ["qxl"];

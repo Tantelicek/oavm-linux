@@ -45,7 +45,6 @@
 
   # Povolení X11 (s Wayland kompozitorem není nutné, necháváme pro kompatibilitu)
   services.xserver.enable = true;
-  services.xserver.videoDrivers = ["qxl"];
 
   # Povoluje KDE Plasmu jako desktop a SDDM jako login/desktop manager
   services.displayManager.sddm.enable = true;
@@ -83,11 +82,6 @@
   # Povolení touchpadu na X11 (povolenoo defaultně ve většině desktopManager).
   # services.xserver.libinput.enable = true;
 
-  #TEMPORARY - Qemu/Boxes agenti a ovladače (přesunout do samostatného souboru) - již nepotřebné
-  # services.spice-autorandr.enable = true;
-  # services.qemuGuest.enable = true;
-  # services.spice-vdagentd.enable = true;
-
   # VirtualBox additions - potřebné pro virtualizaci
   virtualisation.virtualbox.guest.enable = true;
   virtualisation.virtualbox.guest.dragAndDrop = true;
@@ -99,7 +93,6 @@
     extraGroups = ["networkmanager" "wheel"];
     initialPassword = "";
     packages = with pkgs; [
-
     ];
   };
 
@@ -129,6 +122,7 @@
     wget
     mc
     htop
+    inputs.nixpkgs-unstable.legacyPackages.${pkgs.system}.fastfetch
 
     #VScode
     vscode-fhs
