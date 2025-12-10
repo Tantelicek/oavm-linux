@@ -97,10 +97,9 @@
     isNormalUser = true;
     description = "Student OAVM";
     extraGroups = ["networkmanager" "wheel"];
+    initialPassword = "";
     packages = with pkgs; [
-      # Tento package management nepoužívat (aktuálně TEMPORARY)
-      kdePackages.kate
-      #  thunderbird
+
     ];
   };
 
@@ -176,6 +175,10 @@
     #Základní desktop programy
     inputs.nixpkgs-unstable.legacyPackages.${pkgs.system}.onlyoffice-desktopeditors
     microsoft-edge
+    inputs.nixpkgs-unstable.legacyPackages.${pkgs.system}.teams-for-linux
+    libreoffice-qt-fresh
+    kdePackages.kcalc
+    kdePackages.kate
   ];
 
   #Fonty
@@ -218,7 +221,7 @@
 
   # Skrytí nabídky systemd-boot.
   # Možno zobrazit zmáčknutím jakékoliv klávesy
-  boot.loader.timeout = 0;
+  lib.mkForce.boot.loader.timeout = 0;
 
   programs.nh = {
     enable = true;
