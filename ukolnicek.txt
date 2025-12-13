@@ -1,13 +1,13 @@
-Prezentace
-Papír
-Custom fastfetch (oavm smajlík ascii logo, obecné info, stylizace a barvy) Hans
-Test základních příkazů (https://youtu.be/QhvDvpyvPSE?si=E7IGBGZlmcU6CRQh) Můžem oba
-Tvorba liveiso (blokace disků, hw-con.nix, secure boot, komprimace, atd.) Dominik - pozděj
-OAVM Logo na Plymouth (overlay, mbo logo možná) Dominik
-IPXE server (+ moužná proxy) Dominik - pozděj
-Wallpapery Hans
+Jan Houdek - Prezentace
+Jan Houdek - Papír
+Jan Houdek - Custom fastfetch (oavm smajlík ascii logo, obecné info, stylizace a barvy)
+Jan Houdek & Dominik Pala - Test základních příkazů (https://youtu.be/QhvDvpyvPSE?si=E7IGBGZlmcU6CRQh)
+Jan Houdek - Wallpapery
+Dominik Pala - Tvorba liveiso (blokace disků, hw-con.nix, secure boot, komprimace, atd.)
+Dominik Pala - OAVM Logo na Plymouth (overlay, mbo logo možná)
+Dominik Pala - IPXE server (+ moužná proxy)
 
-Ty programy stačí co se teď stihne - Můžem oba
+Programy - Oba dva - Jan Houdek & Dominik Pala
 firefox (policies, extensions, about)
 vscode (extensions, settings.json do home manageru)
 imunes (zástupce v HOME MANAGER)
@@ -21,7 +21,7 @@ php xampp (localserver)
 python (zeptat se na pip)
 git (možná nějaký defaultní config?)
 
-HOME MANAGER Prioritní pro oba, naplno na tom dělá Dominik
+HOME MANAGER - Obd dva - Jan Houdek & Dominik Pala - naplno nyní dělá Dominik
 Plasma-manger config
 To je: -vzhled taskbaru (včetně složek pro předměty, logo startu smajlík atd.)
 -wallpaper, ikonky
