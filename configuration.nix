@@ -117,7 +117,6 @@
   environment.systemPackages = with pkgs; [
     #Základní systémové
     git
-    sourcegit
     vim
     wget
     mc
@@ -165,6 +164,7 @@
     scenebuilder
     netbeans
     python314
+    sourcegit
 
     #Základní desktop programy
     inputs.nixpkgs-unstable.legacyPackages.${pkgs.system}.onlyoffice-desktopeditors
