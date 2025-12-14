@@ -11,12 +11,12 @@
     # Home manager - oficiální zdroj, dědí nixpkgs
     home-manager = {
       url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     # Plasma manager - konfigurace plasmy, dědí nixpkgs a home manager
     plasma-manager = {
       url = "github:nix-community/plasma-manager";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
     };
 
@@ -36,7 +36,7 @@
     pkgs = nixpkgs.legacyPackages.x86_64-linux;
   in {
     nixosConfigurations.oavm-linux-d = nixpkgs.lib.nixosSystem {
-      #system = "x86_64-linux";
+      system = "x86_64-linux";
       specialArgs = {inherit inputs;};
       modules = [
         # Import klasického configuration.nix, jeho nastavení tak stále platí

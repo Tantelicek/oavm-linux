@@ -121,7 +121,7 @@
     wget
     mc
     htop
-    inputs.nixpkgs-unstable.legacyPackages.${pkgs.system}.fastfetch
+    inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.fastfetch
 
     #VScode
     vscode-fhs
@@ -143,8 +143,8 @@
     netcat
     nikto
     burpsuite
-    inputs.nixpkgs-unstable.legacyPackages.${pkgs.system}.sqlmap
-    inputs.imunes.packages.${pkgs.system}.imunes-before-break
+    inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.sqlmap
+    inputs.imunes.packages.${pkgs.stdenv.hostPlatform.system}.imunes-before-break
 
     #OBD
     kdePackages.kleopatra
@@ -167,9 +167,9 @@
     sourcegit
 
     #Základní desktop programy
-    inputs.nixpkgs-unstable.legacyPackages.${pkgs.system}.onlyoffice-desktopeditors
+    inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.onlyoffice-desktopeditors
     microsoft-edge
-    inputs.nixpkgs-unstable.legacyPackages.${pkgs.system}.teams-for-linux
+    inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.teams-for-linux
     libreoffice-qt-fresh
     kdePackages.kcalc
     kdePackages.kate
@@ -180,6 +180,10 @@
     dm-sans
   ];
 
+  programs.dconf.enable = true;
+
+  # systemd.services.home-manager-student.serviceConfig = { RemainAfterExit = "yes"; };
+  
   # Konfigurace potřebná pro nixd
   nix.nixPath = ["nixpkgs=${inputs.nixpkgs}"];
 
