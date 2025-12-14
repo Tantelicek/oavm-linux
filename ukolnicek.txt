@@ -1,8 +1,8 @@
-Jan Houdek - Prezentace
-Jan Houdek - Papír
-Jan Houdek - Custom fastfetch (oavm smajlík ascii logo, obecné info, stylizace a barvy)
+Jan Houdek (Bude 15.12) - Prezentace
+Jan Houdek (Bude 14.12) - Papírová forma
+Jan Houdek (Bude 14.12) - Custom fastfetch (oavm smajlík ascii logo, obecné info, stylizace a barvy)
 Jan Houdek & Dominik Pala - Test základních příkazů (https://youtu.be/QhvDvpyvPSE?si=E7IGBGZlmcU6CRQh)
-Jan Houdek - Wallpapery
+Jan Houdek (Bude 14.12) - Koncepty wallpaperů ve vysoké kvalitě připravené k prezentaci
 Dominik Pala - Tvorba liveiso (blokace disků, hw-con.nix, secure boot, komprimace, atd.)
 Dominik Pala - OAVM Logo na Plymouth (overlay, mbo logo možná)
 Dominik Pala - IPXE server (+ moužná proxy)
@@ -17,19 +17,20 @@ C# ide ( + testnout .net sdk pro linux)
 onlyoffice (home-manager/option/programs.onlyoffice.settings - scaling 100%)
 kleopatra + gnugp atd. (otestovat)
 CUSTOM FETCH PROGRAM (screenfetch, fastfech)
-php xampp (localserver)
+Jan Houdek (Bude 15.12) - php xampp (localserver)
 python (zeptat se na pip)
 git (možná nějaký defaultní config?)
 
-HOME MANAGER - Obd dva - Jan Houdek & Dominik Pala - naplno nyní dělá Dominik
+HOME MANAGER - Oba dva - Jan Houdek & Dominik Pala - naplno nyní dělá Dominik
 Plasma-manger config
-To je: -vzhled taskbaru (včetně složek pro předměty, logo startu smajlík atd.)
--wallpaper, ikonky
+To je: 
+Jan Houdek (bude 14.12) - vzhled taskbaru (včetně složek pro předměty, logo startu smajlík atd.)
+Jan Houdek (bude 14.12) - wallpaper, ikonky
 -webové zástupce
 -info o pc v settings
 -projet nastavení plasmy, nastavit tak aby to dávalo smysl
 -konsole - autorun screenfetch
--configy programů co vyžadují home manger
+-configy programů co vyžadují home manger 
 -kdyžtak přidat něco dalšího xd
 
 Hotové (nejspíš :D)
