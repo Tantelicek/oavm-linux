@@ -1,8 +1,8 @@
-Jan Houdek (Bude 15.12) - Prezentace
-Jan Houdek (Bude 14.12) - Papírová forma
-Jan Houdek (Bude 14.12) - Custom fastfetch (oavm smajlík ascii logo, obecné info, stylizace a barvy)
+Jan Houdek (Není potřeba na projekt -> nebude vytvořena) - Prezentace
+Jan Houdek (Hotovo) - Papírová forma
+Jan Houdek (Hotovo) - Custom fastfetch (oavm smajlík ascii logo, obecné info, stylizace a barvy)
 Jan Houdek & Dominik Pala - Test základních příkazů (https://youtu.be/QhvDvpyvPSE?si=E7IGBGZlmcU6CRQh)
-Jan Houdek (Bude 14.12) - Koncepty wallpaperů ve vysoké kvalitě připravené k prezentaci
+Jan Houdek (Není potřeba na projekt -> před spuštěním do výuky) - Koncepty wallpaperů ve vysoké kvalitě připravené k prezentaci
 Dominik Pala - Tvorba liveiso (blokace disků, hw-con.nix, secure boot, komprimace, atd.)
 Dominik Pala - OAVM Logo na Plymouth (overlay, mbo logo možná)
 Dominik Pala - IPXE server (+ moužná proxy)
@@ -24,8 +24,8 @@ git (možná nějaký defaultní config?)
 HOME MANAGER - Oba dva - Jan Houdek & Dominik Pala - naplno nyní dělá Dominik
 Plasma-manger config
 To je: 
-Jan Houdek (bude 14.12) - vzhled taskbaru (včetně složek pro předměty, logo startu smajlík atd.)
-Jan Houdek (bude 14.12) - wallpaper, ikonky
+-vzhled taskbaru (včetně složek pro předměty, logo startu smajlík atd.)
+-wallpaper, ikonky
 -webové zástupce
 -info o pc v settings
 -projet nastavení plasmy, nastavit tak aby to dávalo smysl
