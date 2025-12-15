@@ -92,6 +92,7 @@
     packages.x86_64-linux = {
       iso = nixos-generators.nixosGenerate {
         system = "x86_64-linux";
+        specialArgs = {inherit inputs;};
         modules = [
               ./configuration.nix
              # ./hardware/honza-vm/hardware-configuration.nix
@@ -110,7 +111,6 @@
       
         ];
         format = "iso";
-        cores = 14;
         
         # optional arguments:
         # explicit nixpkgs and lib:

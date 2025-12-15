@@ -180,6 +180,7 @@
   #Fonty
   fonts.packages = with pkgs; [
     dm-sans
+    nerd-fonts.arimo
   ];
 
   programs.dconf.enable = true;
