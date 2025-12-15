@@ -49,6 +49,8 @@
   # Povoluje KDE Plasmu jako desktop a SDDM jako login/desktop manager
   services.displayManager.sddm.enable = true;
   services.desktopManager.plasma6.enable = true;
+  services.displayManager.autoLogin.enable = true;
+  services.displayManager.autoLogin.user = "student";
 
   # Klávesová mapa v X11
   services.xserver.xkb = {
@@ -183,7 +185,7 @@
   programs.dconf.enable = true;
 
   # systemd.services.home-manager-student.serviceConfig = { RemainAfterExit = "yes"; };
-  
+
   # Konfigurace potřebná pro nixd
   nix.nixPath = ["nixpkgs=${inputs.nixpkgs}"];
 

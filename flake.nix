@@ -22,6 +22,12 @@
 
     # Flake Milánské univerzity Università degli Studi di Milano který obsahuje Imunes package
     imunes.url = "github:/Sesar-Lab-Teaching/Computer-Networks/master";
+
+    #Nixos generator
+    nixos-generators = {
+      url = "github:nix-community/nixos-generators";
+      inputs.nixpkgs.follows = "nixpkgs";
+      };
   };
 
   # Výstupy - lze volat pomocí příkazů nix, nixos-rebuild
@@ -31,6 +37,7 @@
     imunes,
     home-manager,
     plasma-manager,
+    nixos-generators,
     ...
   } @ inputs: let
     pkgs = nixpkgs.legacyPackages.x86_64-linux;
@@ -42,6 +49,7 @@
         # Import klasického configuration.nix, jeho nastavení tak stále platí
         ./configuration.nix
         ./hardware/dominik-pc/hardware-configuration.nix
+        #(import ./overlays)
 
           home-manager.nixosModules.home-manager
           {
@@ -64,7 +72,8 @@
       modules = [
         # Import klasického configuration.nix, jeho nastavení tak stále platí
         ./configuration.nix
-        ./hardware/honza-vm/hardware-configuration.nix 
+        ./hardware/honza-vm/hardware-configuration.nix
+        #(import ./overlays)
         
           home-manager.nixosModules.home-manager
           {
@@ -78,6 +87,42 @@
           }
 
       ];
+    };
+
+    packages.x86_64-linux = {
+      iso = nixos-generators.nixosGenerate {
+        system = "x86_64-linux";
+        modules = [
+              ./configuration.nix
+             # ./hardware/honza-vm/hardware-configuration.nix
+              #(import ./overlays)
+              
+                home-manager.nixosModules.home-manager
+                {
+                  home-manager.useGlobalPkgs = true;
+                  home-manager.useUserPackages = true;
+                  home-manager.sharedModules = [ plasma-manager.homeModules.plasma-manager ];
+
+                  # This should point to your home.nix path of course. For an example
+                  # of this see ./home.nix in this directory.
+                  home-manager.users.student = import ./home.nix;
+          }
+      
+        ];
+        format = "iso";
+        cores = 14;
+        
+        # optional arguments:
+        # explicit nixpkgs and lib:
+        # pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        # lib = nixpkgs.legacyPackages.x86_64-linux.lib;
+        # additional arguments to pass to modules:
+        # specialArgs = { myExtraArg = "foobar"; };
+        
+        # you can also define your own custom formats
+        # customFormats = { "myFormat" = <myFormatModule>; ... };
+        # format = "myFormat";
+      };
     };
 
     packages.x86_64-linux.default = pkgs.hello;

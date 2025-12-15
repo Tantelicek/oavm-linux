@@ -14,6 +14,17 @@
     url = "https://raw.githubusercontent.com/Tantelicek/oavm-linux/refs/heads/main/files/VERT_smiley.ico";
     hash = "sha256-agXmWlbGD6GHupjDj8VSc0SsSd4Y7NAeo3Oe+NOCyFo=";
   };
+
+  fetchjson = pkgs.fetchurl {
+      url = "https://raw.githubusercontent.com/Tantelicek/oavm-linux/refs/heads/main/dotfiles/config.jsonc";
+      hash = "sha256-1TryXidtdAcQtnaVD1iblcm2DzO/sFxLA2s+m/pg/j0=";
+    };
+
+  fetchlogo = pkgs.fetchurl {
+      url = "https://raw.githubusercontent.com/Tantelicek/oavm-linux/refs/heads/main/dotfiles/logo.txt";
+      hash = "sha256-DSRWa4KMjDl3gG0DwErzMgMiC1Ez2OKFig3knqTHMO4=";
+    };
+
 in {
   home.stateVersion = "25.11";
 
@@ -32,6 +43,17 @@ in {
     # recursive = true;
     # force = true;
   };
+
+    home.file."config.jsonc" = {
+    source = fetchjson;
+    target = "/.config/fastfetch/config.jsonc";
+  };
+
+    home.file."logo.txt" = {
+    source = fetchlogo;
+    target = "/.config/fastfetch/logo.txt";
+  };
+
 
   programs.plasma = {
     enable = true;
