@@ -1,0 +1,127 @@
+{
+  "$schema": "https://raw.githubusercontent.com/fastfetch-cli/fastfetch/dev/doc/json_schema.json",
+  "logo": {
+    "source": "~/.config/fastfetch/logo.txt",
+    "type": "file",
+    "color": {
+      "1": "blue",
+      "2": "red"
+   },
+    "padding": {
+      "top": 2,
+      "left": 2,
+      "right": 4
+    }
+  },
+  "display": {
+    "separator": " ➜  ",
+    "color": {
+      "keys": "cyan",
+      "title": "blue"
+    },
+    "size": {
+      "binaryPrefix": "si",
+      "ndigits": 1
+    },
+    "key": {
+        "width": 15
+    }
+  },
+  "modules": [
+    "title",
+    "separator",
+    {
+      "type": "os",
+      "key": "| Systém",
+      "format": "{2} {8}"
+    },
+    {
+      "type": "host",
+      "key": "| PC"
+    },
+    {
+      "type": "kernel",
+      "key": "| Jádro"
+    },
+    {
+      "type": "uptime",
+      "key": "| Běží"
+    },
+    "break",
+    {
+      "type": "de",
+      "key": "| Prostředí"
+    },
+    {
+      "type": "theme",
+      "key": "| Téma"
+    },
+    {
+      "type": "icons",
+      "key": "| Ikony"
+    },
+    "break",
+    {
+      "type": "packages",
+      "key": "| Balíčky"
+    },
+    {
+      "type": "shell",
+      "key": "| Shell"
+    },
+    {
+      "type": "terminal",
+      "key": "| Terminál"
+    },
+    "break",
+    {
+      "type": "cpu",
+      "key": "| CPU",
+      "format": "{1}"
+    },
+    {
+        "type": "cpuusage",
+        "key": "| Vytížení",
+        "format": "{1}"
+    },
+    {
+      "type": "gpu",
+      "key": "| GPU"
+    },
+    {
+      "type": "memory",
+      "key": "| RAM"
+    },
+    {
+      "type": "disk",
+      "key": "| Disk"
+    },
+    {
+      "type": "battery",
+      "key": "| Baterie"
+    },
+    {
+      "type": "localip",
+      "key": "| IP",
+      "showIpv6": false,
+      "compact": true
+    },
+    "break",
+    {
+        "type": "custom",
+        "format": "-----------------------------------"
+    },
+    {
+      "type": "command",
+      "key": "Build",
+      "text": "echo 'OAVM Linux - 1.0'",
+      "keyColor": "blue"
+    },
+    {
+      "type": "command",
+      "key": "Autoři",
+      "text": "echo 'Dominik Pala & Jan Houdek (4.D)'",
+      "keyColor": "blue"
+    }
+  ]
+}
