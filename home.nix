@@ -5,26 +5,37 @@
   lib,
   ...
 }: let
+  # 1. Definice wallpaperu
   oavmwallpaper = pkgs.fetchurl {
     url = "https://raw.githubusercontent.com/Tantelicek/oavm-linux/refs/heads/main/files/oavm-wallpaper.jpg";
     hash = "sha256-LwoV84tHulozw65mAQHJ5b/mB1A6SlRvkfpWO3ULuj8=";
   };
 
-  oavmsmiley = pkgs.fetchurl {
-    url = "https://raw.githubusercontent.com/Tantelicek/oavm-linux/refs/heads/main/files/VERT_smiley.ico";
+  # 2. Stažení původní ikony (ICO)
+  rawIcon = pkgs.fetchurl {
+    name = "raw_smiley.ico";
+    url = "https://raw.githubusercontent.com/Tantelicek/oavm-linux/main/files/VERT_smiley.ico";
     hash = "sha256-agXmWlbGD6GHupjDj8VSc0SsSd4Y7NAeo3Oe+NOCyFo=";
   };
 
+  # 3. KROK NAVÍC: Automatická konverze ICO -> PNG
+  # Toto zajistí, že ikona bude mít správný formát, kterému KDE rozumí.
+  # Používáme '[0]', abychom vzali první vrstvu ikony (pro jistotu).
+  finalPngIcon = pkgs.runCommand "logo.png" {
+    nativeBuildInputs = [ pkgs.imagemagick ];
+  } ''
+    convert "${rawIcon}[0]" -background none -flatten $out
+  '';
+
   fetchjson = pkgs.fetchurl {
-      url = "https://raw.githubusercontent.com/Tantelicek/oavm-linux/refs/heads/main/dotfiles/config.jsonc";
-      hash = "sha256-1TryXidtdAcQtnaVD1iblcm2DzO/sFxLA2s+m/pg/j0=";
-    };
+    url = "https://raw.githubusercontent.com/Tantelicek/oavm-linux/refs/heads/main/dotfiles/config.jsonc";
+    hash = "sha256-1TryXidtdAcQtnaVD1iblcm2DzO/sFxLA2s+m/pg/j0=";
+  };
 
   fetchlogo = pkgs.fetchurl {
-      url = "https://raw.githubusercontent.com/Tantelicek/oavm-linux/refs/heads/main/dotfiles/logo.txt";
-      hash = "sha256-DSRWa4KMjDl3gG0DwErzMgMiC1Ez2OKFig3knqTHMO4=";
-    };
-
+    url = "https://raw.githubusercontent.com/Tantelicek/oavm-linux/refs/heads/main/dotfiles/logo.txt";
+    hash = "sha256-DSRWa4KMjDl3gG0DwErzMgMiC1Ez2OKFig3knqTHMO4=";
+  };
 in {
   home.stateVersion = "25.11";
 
@@ -33,25 +44,19 @@ in {
   home.file."wallpaper.jpg" = {
     source = oavmwallpaper;
     onChange = "cp --remove-destination $(readlink wallpaper.jpg) wallpaper.jpg";
-    # ignorelinks = true;
-    # recursive = true;
-    # force = true;
-  };
-  
-  home.file."smiley.ico" = {
-    source = oavmsmiley;
-    onChange = "cp --remove-destination $(readlink smiley.ico) smiley.png";
-    # ignorelinks = true;
-    # recursive = true;
-    # force = true;
   };
 
-    home.file."config.jsonc" = {
+  # Uložíme už hotové PNG do domovské složky (pro jistotu, kdyby bylo potřeba jinde)
+  home.file."logo.png" = {
+    source = finalPngIcon;
+  };
+
+  home.file."config.jsonc" = {
     source = fetchjson;
     target = "/.config/fastfetch/config.jsonc";
   };
 
-    home.file."logo.txt" = {
+  home.file."logo.txt" = {
     source = fetchlogo;
     target = "/.config/fastfetch/logo.txt";
   };
@@ -76,11 +81,9 @@ in {
   programs.plasma = {
     enable = true;
     overrideConfig = true;
-    #
-    # Some high-level settings
-    #
+
     workspace = {
-      clickItemTo = "select"; # If you liked the click-to-open default from plasma 5
+      clickItemTo = "select";
       lookAndFeel = "org.kde.breezedark.desktop";
       cursor = {
         theme = "breeze_cursors";
@@ -88,7 +91,6 @@ in {
       };
       wallpaper = "/home/student/wallpaper.jpg";
       wallpaperFillMode = "pad";
-
     };
 
     hotkeys.commands."launch-konsole" = {
@@ -102,51 +104,29 @@ in {
         family = "DeepMind Sans";
         pointSize = 12;
       };
-
       fixedWidth = {
         family = "DeepMind Sans";
         pointSize = 10;
       };
-
       menu = {
         family = "DeepMind Sans";
         pointSize = 10;
       };
-
       small = {
         family = "DeepMind Sans";
         pointSize = 8;
       };
-
       toolbar = {
         family = "DeepMind Sans";
         pointSize = 10;
       };
-
       windowTitle = {
         family = "DeepMind Sans";
         pointSize = 10;
       };
     };
 
-    # Widgety na ploše
-    # desktop.widgets = [
-    #   {
-    #     plasmusicToolbar = {
-    #       position = {
-    #         horizontal = 51;
-    #         vertical = 100;
-    #       };
-    #       size = {
-    #         width = 250;
-    #         height = 250;
-    #       };
-    #     };
-    #   }
-    # ];
-
     panels = [
-      # Windows-like panel at the bottom
       {
         alignment = "center";
         location = "bottom";
@@ -155,43 +135,24 @@ in {
         lengthMode = "fit";
         opacity = "adaptive";
         widgets = [
-          # We can configure the widgets by adding the name and config
-          # attributes. For example to add the the kickoff widget and set the
-          # icon to "nix-snowflake-white" use the below configuration. This will
-          # add the "icon" key to the "General" group for the widget in
-          # ~/.config/plasma-org.kde.plasma.desktop-appletsrc.
-          # {
-          #   name = "org.kde.plasma.kickoff";
-          #   config = {
-          #     General = {
-          #       icon = "nix-snowflake-white";
-          #       alphaSort = true;
-          #     };
-          #   };
-          # }
-          # Or you can configure the widgets by adding the widget-specific options for it.
-          # See modules/widgets for supported widgets and options for these widgets.
-          # For example:
           {
             kickoff = {
               sortAlphabetically = true;
-             icon = "/home/student/smiley.png";
+              # ZDE JE ZMĚNA: Odkazujeme přímo na vygenerované PNG v Nix Store.
+              # To je nejspolehlivější metoda.
+              icon = "${finalPngIcon}";
             };
           }
-          # Adding configuration to the widgets can also for example be used to
-          # pin apps to the task-manager, which this example illustrates by
-          # pinning dolphin and konsole to the task-manager by default with widget-specific options.
           {
             iconTasks = {
               launchers = [
                 "applications:firefox.desktop"
-                #"applications:microsoft-edge.desktop"
                 "applications:org.kde.dolphin.desktop"
                 "applications:org.kde.konsole.desktop"
                 "applications:onlyoffice-desktopeditors.desktop"
                 "applications:code.desktop"
               ];
-              
+
               appearance = {
                 showTooltips = true;
                 iconSpacing = "medium";
@@ -202,44 +163,19 @@ in {
                 middleClickAction = "newInstance";
                 newTasksAppearOn = "right";
               };
-              
             };
           }
-          # # Or you can do it manually, for example:
-          # {
-          #   name = "org.kde.plasma.icontasks";
-          #   config = {
-          #     General = {
-          #       launchers = [
-          #         "applications:org.kde.dolphin.desktop"
-          #         "applications:org.kde.konsole.desktop"
-          #       ];
-          #     };
-          #   };
-          # }
-          # If no configuration is needed, specifying only the name of the
-          # widget will add them with the default configuration.
           "org.kde.plasma.marginsseparator"
-          # If you need configuration for your widget, instead of specifying the
-          # the keys and values directly using the config attribute as shown
-          # above, plasma-manager also provides some higher-level interfaces for
-          # configuring the widgets. See modules/widgets for supported widgets
-          # and options for these widgets. The widgets below shows two examples
-          # of usage, one where we add a digital clock, setting 12h time and
-          # first day of the week to Sunday and another adding a systray with
-          # some modifications in which entries to show.
           {
             systemTray = {
               icons = {
                 spacing = "medium";
               };
               items = {
-                # We explicitly show bluetooth and battery
                 shown = [
                   "org.kde.plasma.volume"
                   "org.kde.plasma.bluetooth"
                 ];
-                # And explicitly hide networkmanagement and volume
                 hidden = [
                   "org.kde.plasma.battery"
                   "org.kde.plasma.networkmanagement"
@@ -247,7 +183,6 @@ in {
               };
             };
           }
-
           {
             digitalClock = {
               date = {
@@ -258,114 +193,18 @@ in {
               calendar = {
                 firstDayOfWeek = "monday";
               };
-
               time = {
                 format = "default";
                 showSeconds = "always";
               };
-
               font.family = "DeepMind Sans";
             };
           }
-
-          
-            #DŮLEŽITÉ!!!, přidat button na minimize all tabs
-          
         ];
       }
-      # Application name, Global menu and Song information and playback controls at the top
-      # {
-      #   location = "top";
-      #   height = 26;
-      #   widgets = [
-      #     {
-      #       applicationTitleBar = {
-      #         behavior = {
-      #           activeTaskSource = "activeTask";
-      #         };
-      #         layout = {
-      #           elements = ["windowTitle"];
-      #           horizontalAlignment = "left";
-      #           showDisabledElements = "deactivated";
-      #           verticalAlignment = "center";
-      #         };
-      #         overrideForMaximized.enable = false;
-      #         titleReplacements = [
-      #           {
-      #             type = "regexp";
-      #             originalTitle = "^Brave Web Browser$";
-      #             newTitle = "Brave";
-      #           }
-      #           {
-      #             type = "regexp";
-      #             originalTitle = ''\\bDolphin\\b'';
-      #             newTitle = "File manager";
-      #           }
-      #         ];
-      #         windowTitle = {
-      #           font = {
-      #             bold = false;
-      #             fit = "fixedSize";
-      #             size = 12;
-      #           };
-      #           hideEmptyTitle = true;
-      #           margins = {
-      #             bottom = 0;
-      #             left = 10;
-      #             right = 5;
-      #             top = 0;
-      #           };
-      #           source = "appName";
-      #         };
-      #       };
-      #     }
-      #     "org.kde.plasma.appmenu"
-      #     "org.kde.plasma.panelspacer"
-      #     {
-      #       plasmusicToolbar = {
-      #         panelIcon = {
-      #           albumCover = {
-      #             useAsIcon = false;
-      #             radius = 8;
-      #           };
-      #           icon = "view-media-track";
-      #         };
-      #         playbackSource = "auto";
-      #         musicControls.showPlaybackControls = true;
-      #         songText = {
-      #           displayInSeparateLines = true;
-      #           maximumWidth = 640;
-      #           scrolling = {
-      #             behavior = "alwaysScroll";
-      #             speed = 3;
-      #           };
-      #         };
-      #       };
-      #     }
-      #   ];
-      # }
     ];
 
     window-rules = [
-      # {
-      #   description = "Dolphin";
-      #   match = {
-      #     window-class = {
-      #       value = "dolphin";
-      #       type = "substring";
-      #     };
-      #     window-types = ["normal"];
-      #   };
-      #   apply = {
-      #     noborder = {
-      #       value = true;
-      #       apply = "force";
-      #     };
-      #     # `apply` defaults to "apply-initially"
-      #     maximizehoriz = true;
-      #     maximizevert = true;
-      #   };
-      # }
     ];
 
     powerdevil = {
@@ -373,7 +212,6 @@ in {
       AC = {
         powerButtonAction = "shutDown";
         autoSuspend = {
-          #action = "nothing";
           idleTimeout = 1000;
         };
         turnOffDisplay = {
@@ -395,7 +233,7 @@ in {
     };
 
     kwin = {
-      edgeBarrier = 0; # Disables the edge-barriers introduced in plasma 6.1
+      edgeBarrier = 0;
       cornerBarrier = false;
     };
 
@@ -404,9 +242,6 @@ in {
       timeout = 10;
     };
 
-    #
-    # Some mid-level settings:
-    #
     shortcuts = {
       ksmserver = {
         "Lock Session" = [
@@ -414,7 +249,6 @@ in {
           "Meta+Ctrl+Alt+L"
         ];
       };
-
       kwin = {
         "Expose" = "Meta+,";
         "Switch Window Down" = "Meta+J";
@@ -424,22 +258,20 @@ in {
       };
     };
 
-    #
-    # Some low-level settings:
-    #
     configFile = {
       baloofilerc."Basic Settings"."Indexing-Enabled" = false;
       kwinrc."org.kde.kdecoration2".ButtonsOnLeft = "SF";
       kwinrc.Desktops.Number = {
         value = 8;
-        # Forces kde to not change this value (even through the settings app).
         immutable = true;
       };
       kscreenlockerrc = {
-        Greeter.WallpaperPlugin = "org.kde.potd";
-        # To use nested groups use / as a separator. In the below example,
-        # Provider will be added to [Greeter][Wallpaper][org.kde.potd][General].
-        "Greeter/Wallpaper/org.kde.potd/General".Provider = "bing";
+        "Greeter" = {
+          WallpaperPlugin = "org.kde.potd";
+        };
+        "Greeter/Wallpaper/org.kde.potd/General" = {
+          Provider = "bing";
+        };
       };
     };
   };
