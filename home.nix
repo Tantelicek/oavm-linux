@@ -28,6 +28,8 @@
 in {
   home.stateVersion = "25.11";
 
+  home.enableNixpkgsReleaseCheck = false;
+
   home.file."wallpaper.jpg" = {
     source = oavmwallpaper;
     onChange = "cp --remove-destination $(readlink wallpaper.jpg) wallpaper.jpg";
@@ -54,6 +56,22 @@ in {
     target = "/.config/fastfetch/logo.txt";
   };
 
+  programs.bash = {
+    enable = true;
+    initExtra = "fastfetch";
+  };
+
+  programs.konsole = {
+    enable = true;
+    defaultProfile = "student";
+    profiles.student = {
+      # command = "fastfetch && bash";
+      font = {
+        name = "DejaVu Sans Mono";
+        size = 12;
+       };
+    };
+  };
 
   programs.plasma = {
     enable = true;
@@ -425,4 +443,6 @@ in {
       };
     };
   };
+
+
 }
