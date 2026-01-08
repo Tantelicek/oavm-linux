@@ -52,6 +52,11 @@
   services.displayManager.autoLogin.enable = true;
   services.displayManager.autoLogin.user = "student";
 
+security.pam.services.student.kwallet.enable = true;
+security.pam.services.student.kwallet.forceRun = true;
+security.pam.services.student.kwallet.package = pkgs.kdePackages.kwallet-pam;
+
+
   # Klávesová mapa v X11
   services.xserver.xkb = {
     layout = "cz";
@@ -123,6 +128,8 @@
     wget
     mc
     htop
+    zip
+    unzip
     inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.fastfetch
 
     #VScode

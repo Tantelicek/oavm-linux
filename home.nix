@@ -137,7 +137,7 @@ in {
         widgets = [
           {
             kickoff = {
-              sortAlphabetically = true;
+              sortAlphabetically = false;
               # ZDE JE ZMĚNA: Odkazujeme přímo na vygenerované PNG v Nix Store.
               # To je nejspolehlivější metoda.
               icon = "${finalPngIcon}";
@@ -276,5 +276,10 @@ in {
     };
   };
 
+  # Konfigurace .desktop souborů
+
+  # xdg.desktopEntries = {
+
+  # };
 
 }
