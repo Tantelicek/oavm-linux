@@ -36,10 +36,17 @@
     url = "https://raw.githubusercontent.com/Tantelicek/oavm-linux/refs/heads/main/dotfiles/logo.txt";
     hash = "sha256-DSRWa4KMjDl3gG0DwErzMgMiC1Ez2OKFig3knqTHMO4=";
   };
+
+
+
 in {
   home.stateVersion = "25.11";
 
   home.enableNixpkgsReleaseCheck = false;
+
+  #xdg.configFile."/home/student/.gtkrc-2.0".force = true;
+  #home.file."/home/student/.gtkrc-2.0".force = true;
+
 
   home.file."wallpaper.jpg" = {
     source = oavmwallpaper;

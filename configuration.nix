@@ -3,10 +3,17 @@
   config,
   pkgs,
   inputs,
+  lib,
   ...
-}: {
+}: let
+in {
   imports = [
+    ./modules/stylix
+    ./modules/info
   ];
+
+  system.stylix.enable = true;
+  system.info.enable = true;
 
   # Bootloader
   boot.loader.systemd-boot.enable = true;
@@ -17,6 +24,7 @@
 
   networking.hostName = "oavm-linux"; # Jméno na síti (hostname)
   #networking.wireless.enable = true; # Bezdratové připojení (wpa_supplicant)
+  #networking.wireless.userControlled.enable = true;
 
   # Síťová proxy (POZNÁMKA: zeptat se, zda bude nutná)
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -52,10 +60,9 @@
   services.displayManager.autoLogin.enable = true;
   services.displayManager.autoLogin.user = "student";
 
-security.pam.services.student.kwallet.enable = true;
-security.pam.services.student.kwallet.forceRun = true;
-security.pam.services.student.kwallet.package = pkgs.kdePackages.kwallet-pam;
-
+  security.pam.services.student.kwallet.enable = true;
+  security.pam.services.student.kwallet.forceRun = true;
+  security.pam.services.student.kwallet.package = pkgs.kdePackages.kwallet-pam;
 
   # Klávesová mapa v X11
   services.xserver.xkb = {
@@ -131,6 +138,7 @@ security.pam.services.student.kwallet.package = pkgs.kdePackages.kwallet-pam;
     zip
     unzip
     inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.fastfetch
+    #wpa_supplicant_gui
 
     #VScode
     vscode-fhs
@@ -188,6 +196,7 @@ security.pam.services.student.kwallet.package = pkgs.kdePackages.kwallet-pam;
   fonts.packages = with pkgs; [
     dm-sans
     nerd-fonts.arimo
+    nerd-fonts.dejavu-sans-mono
   ];
 
   programs.dconf.enable = true;
@@ -206,13 +215,6 @@ security.pam.services.student.kwallet.package = pkgs.kdePackages.kwallet-pam;
   boot = {
     plymouth = {
       enable = true;
-      theme = "deus_ex";
-      themePackages = with pkgs; [
-        # By default we would install all themes
-        (adi1090x-plymouth-themes.override {
-          selected_themes = ["deus_ex"];
-        })
-      ];
     };
 
     # Enable "Silent boot"
@@ -238,31 +240,65 @@ security.pam.services.student.kwallet.package = pkgs.kdePackages.kwallet-pam;
     flake = "/home/student/oavm-linux/oavm-linux"; # sets NH_OS_FLAKE variable for you
   };
 
-  # Nastavení vlastních informací o systému
-  environment.etc."xdg/kcm-about-distrorc".text = let
-    customLogo = pkgs.fetchurl {
-      url = "https://raw.githubusercontent.com/Tantelicek/oavm-linux/refs/heads/main/files/VERT_smiley.ico";
-      hash = "sha256-agXmWlbGD6GHupjDj8VSc0SsSd4Y7NAeo3Oe+NOCyFo=";
+  # Enable OpenGL
+  hardware.graphics = {
+    enable = true;
+  };
+
+  # Load nvidia driver for Xorg and Wayland
+  services.xserver.videoDrivers = ["nvidia"];
+
+  hardware.nvidia = {
+    # Modesetting is required.
+    modesetting.enable = true;
+
+    # Nvidia power management. Experimental, and can cause sleep/suspend to fail.
+    # Enable this if you have graphical corruption issues or application crashes after waking
+    # up from sleep. This fixes it by saving the entire VRAM memory to /tmp/ instead
+    # of just the bare essentials.
+    powerManagement.enable = false;
+
+    # Fine-grained power management. Turns off GPU when not in use.di
+    # Experimental and only works on modern Nvidia GPUs (Turing or newer).
+    powerManagement.finegrained = false;
+
+    # Use the NVidia open source kernel module (not to be confused with the
+    # independent third-party "nouveau" open source driver).
+    # Support is limited to the Turing and later architectures. Full list of
+    # supported GPUs is at:
+    # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus
+    # Only available from driver 515.43.04+
+    open = false;
+
+    # Enable the Nvidia settings menu,
+    # accessible via `nvidia-settings`.
+    nvidiaSettings = true;
+
+    # Optionally, you may need to select the appropriate driver version for your specific GPU.
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
+  };
+
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+    settings = {
+      General = {
+        # Shows battery charge of connected devices on supported
+        # Bluetooth adapters. Defaults to 'false'.
+        Experimental = true;
+        # When enabled other devices can connect faster to us, however
+        # the tradeoff is increased power consumption. Defaults to
+        # 'false'.
+        FastConnectable = true;
+      };
+      Policy = {
+        # Enable all controllers when they are found. This includes
+        # adapters present on start as well as adapters that are plugged
+        # in later on. Defaults to 'true'.
+        AutoEnable = true;
+      };
     };
-  in ''
-    [General]
-    LogoPath=${customLogo}
-
-    Name=OAVM Linux | Od Dominika Paly a Jana Houdka
-
-    Website=https://www.oavm.cz
-  '';
-
-  # DŮLEŽITÉ: Změna názvu i v /etc/os-release (pro ostatní aplikace mimo KDE)
-  environment.etc."os-release".text = ''
-    NAME="OAVM Linux"
-    ID=nixos
-    VERSION="1.0"
-    PRETTY_NAME="OAVM Linux | Od Dominika Paly a Jana Houdka
-    HOME_URL="https://www.oavm.cz"
-    SUPPORT_URL="https://github.com/Tantelicek/oavm-linux"
-  '';
-
+  };
 
   # Povolování servisů (např OpenSSH daemon)
 

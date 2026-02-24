@@ -2,6 +2,103 @@
   # Popisek
   description = "OAVM Linux - Main flake";
 
+  # Výstupy - lze volat pomocí příkazů nix, nixos-rebuild
+  outputs = inputs @ {self, ...}: let
+    pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
+    system = "x86_64-linux";
+  in {
+    nixosConfigurations.oavm-linux-d = inputs.nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      specialArgs = {inherit inputs;};
+      modules = [
+        # Import klasického configuration.nix, jeho nastavení tak stále platí
+        ./configuration.nix
+        ./hardware/dominik-pc/hardware-configuration.nix
+        #(import ./overlays)
+
+        inputs.home-manager.nixosModules.home-manager
+        {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.sharedModules = [inputs.plasma-manager.homeModules.plasma-manager];
+
+          # This should point to your home.nix path of course. For an example
+          # of this see ./home.nix in this directory.
+          home-manager.users.student = import ./home.nix;
+        }
+      ];
+    };
+
+    nixosConfigurations.oavm-linux-h = inputs.nixpkgs.lib.nixosSystem {
+      #system = "x86_64-linux";
+      specialArgs = {inherit inputs;};
+      modules = [
+        # Import klasického configuration.nix, jeho nastavení tak stále platí
+        ./configuration.nix
+        ./hardware/honza-vm/hardware-configuration.nix
+        #(import ./overlays)
+
+        inputs.home-manager.nixosModules.home-manager
+        {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.sharedModules = [inputs.plasma-manager.homeModules.plasma-manager];
+
+          # This should point to your home.nix path of course. For an example
+          # of this see ./home.nix in this directory.
+          home-manager.users.student = import ./home.nix;
+        }
+      ];
+    };
+
+    packages.x86_64-linux = {
+      iso = inputs.nixos-generators.nixosGenerate {
+        system = "x86_64-linux";
+        specialArgs = {inherit inputs;};
+        modules = [
+          ./configuration.nix
+          # ./hardware/honza-vm/hardware-configuration.nix
+          #(import ./overlays)
+
+          inputs.home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.sharedModules = [inputs.plasma-manager.homeModules.plasma-manager];
+
+            # This should point to your home.nix path of course. For an example
+            # of this see ./home.nix in this directory.
+            home-manager.users.student = import ./home.nix;
+          }
+        ];
+        format = "iso";
+
+        # optional arguments:
+        # explicit nixpkgs and lib:
+        # pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        # lib = nixpkgs.legacyPackages.x86_64-linux.lib;
+        # additional arguments to pass to modules:
+        # specialArgs = { myExtraArg = "foobar"; };
+
+        # you can also define your own custom formats
+        # customFormats = { "myFormat" = <myFormatModule>; ... };
+        # format = "myFormat";
+      };
+    };
+
+    packages.x86_64-linux.default = pkgs.hello;
+
+    packages.x86_64-linux.imunes = inputs.imunes.packages.x86_64-linux.imunes-before-break;
+
+    packages.x86_64-linux.oavm-linux = pkgs.wireshark;
+
+    #packages.x86_64-linux.netbeans = nixpkgs-cfc1110dc.legacyPackages.x86_64-linux.netbeans;
+
+    #devShells.x86_64-linux.prgold = pkgs.mkShell {
+
+    #};
+  };
+
   # Vstupy na kterých flake staví
   inputs = {
     # NixOS oficiální a aktuální stabilní zdroj balíčků 25.11
@@ -27,108 +124,12 @@
     nixos-generators = {
       url = "github:nix-community/nixos-generators";
       inputs.nixpkgs.follows = "nixpkgs";
-      };
-  };
-
-  # Výstupy - lze volat pomocí příkazů nix, nixos-rebuild
-  outputs = {
-    self,
-    nixpkgs,
-    imunes,
-    home-manager,
-    plasma-manager,
-    nixos-generators,
-    ...
-  } @ inputs: let
-    pkgs = nixpkgs.legacyPackages.x86_64-linux;
-  in {
-    nixosConfigurations.oavm-linux-d = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      specialArgs = {inherit inputs;};
-      modules = [
-        # Import klasického configuration.nix, jeho nastavení tak stále platí
-        ./configuration.nix
-        ./hardware/dominik-pc/hardware-configuration.nix
-        #(import ./overlays)
-
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.sharedModules = [ plasma-manager.homeModules.plasma-manager ];
-
-            # This should point to your home.nix path of course. For an example
-            # of this see ./home.nix in this directory.
-            home-manager.users.student = import ./home.nix;
-           }
-       
-      ];
     };
 
-        
-    nixosConfigurations.oavm-linux-h = nixpkgs.lib.nixosSystem {
-      #system = "x86_64-linux";
-      specialArgs = {inherit inputs;};
-      modules = [
-        # Import klasického configuration.nix, jeho nastavení tak stále platí
-        ./configuration.nix
-        ./hardware/honza-vm/hardware-configuration.nix
-        #(import ./overlays)
-        
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.sharedModules = [ plasma-manager.homeModules.plasma-manager ];
-
-            # This should point to your home.nix path of course. For an example
-            # of this see ./home.nix in this directory.
-            home-manager.users.student = import ./home.nix;
-          }
-
-      ];
+    # Stylix
+    stylix = {
+      url = "github:nix-community/stylix/release-25.11";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    packages.x86_64-linux = {
-      iso = nixos-generators.nixosGenerate {
-        system = "x86_64-linux";
-        specialArgs = {inherit inputs;};
-        modules = [
-              ./configuration.nix
-             # ./hardware/honza-vm/hardware-configuration.nix
-              #(import ./overlays)
-              
-                home-manager.nixosModules.home-manager
-                {
-                  home-manager.useGlobalPkgs = true;
-                  home-manager.useUserPackages = true;
-                  home-manager.sharedModules = [ plasma-manager.homeModules.plasma-manager ];
-
-                  # This should point to your home.nix path of course. For an example
-                  # of this see ./home.nix in this directory.
-                  home-manager.users.student = import ./home.nix;
-          }
-      
-        ];
-        format = "iso";
-        
-        # optional arguments:
-        # explicit nixpkgs and lib:
-        # pkgs = nixpkgs.legacyPackages.x86_64-linux;
-        # lib = nixpkgs.legacyPackages.x86_64-linux.lib;
-        # additional arguments to pass to modules:
-        # specialArgs = { myExtraArg = "foobar"; };
-        
-        # you can also define your own custom formats
-        # customFormats = { "myFormat" = <myFormatModule>; ... };
-        # format = "myFormat";
-      };
-    };
-
-    packages.x86_64-linux.default = pkgs.hello;
-
-    packages.x86_64-linux.imunes = imunes.packages.x86_64-linux.imunes-before-break;
-
-    packages.x86_64-linux.oavm-linux = pkgs.wireshark;
   };
 }
