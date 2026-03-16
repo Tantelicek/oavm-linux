@@ -131,5 +131,8 @@
       url = "github:nix-community/stylix/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Nix-flatpak
+    nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
   };
 }

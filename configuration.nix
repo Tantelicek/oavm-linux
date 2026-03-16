@@ -10,10 +10,12 @@ in {
   imports = [
     ./modules/stylix
     ./modules/info
+    ./modules/flatpak
   ];
 
   system.stylix.enable = true;
   system.info.enable = true;
+  system.flatpak.enable = true;
 
   # Bootloader
   boot.loader.systemd-boot.enable = true;
