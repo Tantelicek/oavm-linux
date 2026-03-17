@@ -14,6 +14,7 @@
         # Import klasického configuration.nix, jeho nastavení tak stále platí
         ./configuration.nix
         ./hardware/dominik-pc/hardware-configuration.nix
+        ./modules/temporary
         #(import ./overlays)
 
         inputs.home-manager.nixosModules.home-manager
@@ -26,7 +27,9 @@
           # of this see ./home.nix in this directory.
           home-manager.users.student = import ./home.nix;
         }
+
       ];
+
     };
 
     nixosConfigurations.oavm-linux-h = inputs.nixpkgs.lib.nixosSystem {

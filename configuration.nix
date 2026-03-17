@@ -11,11 +11,16 @@ in {
     ./modules/stylix
     ./modules/info
     ./modules/flatpak
+    ./modules/users
+    ./modules/temporary
   ];
 
   system.stylix.enable = true;
   system.info.enable = true;
   system.flatpak.enable = true;
+  system.users.enable = true;
+  system.temporary.enable = true;
+
 
   # Bootloader
   boot.loader.systemd-boot.enable = true;
@@ -102,17 +107,7 @@ in {
   virtualisation.virtualbox.guest.enable = true;
   virtualisation.virtualbox.guest.dragAndDrop = true;
 
-  # Uživatelský účet student (nastavení hesla přes passwd)
-  users.users.student = {
-    isNormalUser = true;
-    description = "Student OAVM";
-    extraGroups = ["networkmanager" "wheel"];
-    initialPassword = "";
-    packages = with pkgs; [
-    ];
-  };
-
-  # Instalace firefoxu (nejspíše přesuneme do flaku)
+  # Instalace firefoxu
   programs.firefox = {
     enable = true;
     preferences = {
@@ -139,8 +134,8 @@ in {
     htop
     zip
     unzip
-    inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.fastfetch
-    #wpa_supplicant_gui
+    mission-center
+    inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.fastfetch   
 
     #VScode
     vscode-fhs
@@ -149,9 +144,6 @@ in {
     alejandra
     nixpkgs-fmt
     nixd
-
-    #TEMPORARY
-    discord
 
     #Sítě
     wireshark
@@ -213,7 +205,7 @@ in {
   programs.wireshark.dumpcap.enable = true;
   programs.wireshark.usbmon.enable = false;
 
-  #Plymouth - boot animace (JEŠTĚ PROKONZULTOVAT + PŘIDAT OAVM LOGO)
+  #Plymouth - boot animace
   boot = {
     plymouth = {
       enable = true;
@@ -247,56 +239,16 @@ in {
     enable = true;
   };
 
-  # Load nvidia driver for Xorg and Wayland
-  services.xserver.videoDrivers = ["nvidia"];
-
-  hardware.nvidia = {
-    # Modesetting is required.
-    modesetting.enable = true;
-
-    # Nvidia power management. Experimental, and can cause sleep/suspend to fail.
-    # Enable this if you have graphical corruption issues or application crashes after waking
-    # up from sleep. This fixes it by saving the entire VRAM memory to /tmp/ instead
-    # of just the bare essentials.
-    powerManagement.enable = false;
-
-    # Fine-grained power management. Turns off GPU when not in use.di
-    # Experimental and only works on modern Nvidia GPUs (Turing or newer).
-    powerManagement.finegrained = false;
-
-    # Use the NVidia open source kernel module (not to be confused with the
-    # independent third-party "nouveau" open source driver).
-    # Support is limited to the Turing and later architectures. Full list of
-    # supported GPUs is at:
-    # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus
-    # Only available from driver 515.43.04+
-    open = false;
-
-    # Enable the Nvidia settings menu,
-    # accessible via `nvidia-settings`.
-    nvidiaSettings = true;
-
-    # Optionally, you may need to select the appropriate driver version for your specific GPU.
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
-  };
-
+# Povolení bluetooth
   hardware.bluetooth = {
     enable = true;
     powerOnBoot = true;
     settings = {
       General = {
-        # Shows battery charge of connected devices on supported
-        # Bluetooth adapters. Defaults to 'false'.
         Experimental = true;
-        # When enabled other devices can connect faster to us, however
-        # the tradeoff is increased power consumption. Defaults to
-        # 'false'.
         FastConnectable = true;
       };
       Policy = {
-        # Enable all controllers when they are found. This includes
-        # adapters present on start as well as adapters that are plugged
-        # in later on. Defaults to 'true'.
         AutoEnable = true;
       };
     };
