@@ -25,7 +25,6 @@ in {
     };
 
     #Admin
-
     users.users.admin = {
       isNormalUser = true;
       description = "Admin OAVM";

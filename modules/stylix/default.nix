@@ -53,6 +53,29 @@ in {
         hash = "sha256-H4oPTZajGtV54M9sSExWrYGiK5xpGfTUqRMTV8YSG4U=";
       };
     };
+
+    #Plymouth - boot animace
+    boot = {
+      plymouth = {
+        enable = true;
+      };
+
+      # Enable "Silent boot"
+      consoleLogLevel = 3;
+      initrd.verbose = false;
+      kernelParams = [
+        "quiet"
+        "splash"
+        "boot.shell_on_fail"
+        "udev.log_priority=3"
+        "rd.systemd.show_status=auto"
+      ];
+    };
+
+    # Skrytí nabídky systemd-boot.
+    # Možno zobrazit zmáčknutím jakékoliv klávesy
+    lib.mkForce.boot.loader.timeout = 0;
+
     # Fonty
     stylix.fonts = {
       serif = {

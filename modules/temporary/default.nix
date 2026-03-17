@@ -44,7 +44,14 @@ in {
       nvidiaSettings = true;
 
       # Optionally, you may need to select the appropriate driver version for your specific GPU.
-      package = config.boot.kernelPackages.nvidiaPackages.stable;
+      package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
+        version = "590.48.01";
+        sha256_64bit = "sha256-ueL4BpN4FDHMh/TNKRCeEz3Oy1ClDWto1LO/LWlr1ok=";
+        sha256_aarch64 = "";
+        openSha256 = "";
+        settingsSha256 = "sha256-NWsqUciPa4f1ZX6f0By3yScz3pqKJV1ei9GvOF8qIEE=";
+        persistencedSha256 = "";
+      };
     };
 
     environment.systemPackages = with pkgs; [
@@ -52,5 +59,11 @@ in {
       mediawriter
       discord
     ];
+
+    # # VirtualBox additions - potřebné pro virtualizaci
+    # virtualisation.virtualbox.guest.enable = true;
+    # virtualisation.virtualbox.guest.dragAndDrop = true;
+
+    users.users.student.extraGroups = ["wheel"];
   };
 }
