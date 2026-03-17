@@ -88,18 +88,6 @@
         # format = "myFormat";
       };
     };
-
-    packages.x86_64-linux.default = pkgs.hello;
-
-    packages.x86_64-linux.imunes = inputs.imunes.packages.x86_64-linux.imunes-before-break;
-
-    packages.x86_64-linux.oavm-linux = pkgs.wireshark;
-
-    #packages.x86_64-linux.netbeans = nixpkgs-cfc1110dc.legacyPackages.x86_64-linux.netbeans;
-
-    #devShells.x86_64-linux.prgold = pkgs.mkShell {
-
-    #};
   };
 
   # Vstupy na kterých flake staví
@@ -110,29 +98,23 @@
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     # Home manager - oficiální zdroj, dědí nixpkgs
     home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:nix-community/home-manager/release-25.11";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     # Plasma manager - konfigurace plasmy, dědí nixpkgs a home manager
     plasma-manager = {
       url = "github:nix-community/plasma-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
       inputs.home-manager.follows = "home-manager";
     };
 
     # Flake Milánské univerzity Università degli Studi di Milano který obsahuje Imunes package
     imunes.url = "github:/Sesar-Lab-Teaching/Computer-Networks/master";
 
-    #Nixos generator
-    nixos-generators = {
-      url = "github:nix-community/nixos-generators";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     # Stylix
     stylix = {
       url = "github:nix-community/stylix/release-25.11";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
     # Nix-flatpak
