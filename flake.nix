@@ -14,22 +14,18 @@
         # Import klasického configuration.nix, jeho nastavení tak stále platí
         ./configuration.nix
         ./hardware/dominik-pc/hardware-configuration.nix
-        ./modules/temporary
         #(import ./overlays)
+
+        {temporary.enable = false;}
 
         inputs.home-manager.nixosModules.home-manager
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.sharedModules = [inputs.plasma-manager.homeModules.plasma-manager];
-
-          # This should point to your home.nix path of course. For an example
-          # of this see ./home.nix in this directory.
           home-manager.users.student = import ./home.nix;
         }
-
       ];
-
     };
 
     nixosConfigurations.oavm-linux-h = inputs.nixpkgs.lib.nixosSystem {
@@ -39,6 +35,7 @@
         # Import klasického configuration.nix, jeho nastavení tak stále platí
         ./configuration.nix
         ./hardware/honza-vm/hardware-configuration.nix
+        ./modules/temporary
         #(import ./overlays)
 
         inputs.home-manager.nixosModules.home-manager
@@ -46,47 +43,37 @@
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.sharedModules = [inputs.plasma-manager.homeModules.plasma-manager];
-
-          # This should point to your home.nix path of course. For an example
-          # of this see ./home.nix in this directory.
           home-manager.users.student = import ./home.nix;
         }
       ];
+
+      dev.temporary.enable = true;
     };
 
-    packages.x86_64-linux = {
-      iso = inputs.nixos-generators.nixosGenerate {
-        system = "x86_64-linux";
-        specialArgs = {inherit inputs;};
-        modules = [
-          ./configuration.nix
-          # ./hardware/honza-vm/hardware-configuration.nix
-          #(import ./overlays)
+    nixosConfigurations.oavm-linux-iso = inputs.nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      specialArgs = {inherit inputs;};
+      modules = [
+        # Import klasického configuration.nix, jeho nastavení tak stále platí
+        ./configuration.nix
 
-          inputs.home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.sharedModules = [inputs.plasma-manager.homeModules.plasma-manager];
+        ({
+          pkgs,
+          modulesPath,
+          ...
+        }: {
+          imports = [(modulesPath + "/installer/cd-dvd/installation-cd-minimal.nix")];
+        })
+        #(import ./overlays)
 
-            # This should point to your home.nix path of course. For an example
-            # of this see ./home.nix in this directory.
-            home-manager.users.student = import ./home.nix;
-          }
-        ];
-        format = "iso";
-
-        # optional arguments:
-        # explicit nixpkgs and lib:
-        # pkgs = nixpkgs.legacyPackages.x86_64-linux;
-        # lib = nixpkgs.legacyPackages.x86_64-linux.lib;
-        # additional arguments to pass to modules:
-        # specialArgs = { myExtraArg = "foobar"; };
-
-        # you can also define your own custom formats
-        # customFormats = { "myFormat" = <myFormatModule>; ... };
-        # format = "myFormat";
-      };
+        inputs.home-manager.nixosModules.home-manager
+        {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.sharedModules = [inputs.plasma-manager.homeModules.plasma-manager];
+          home-manager.users.student = import ./home.nix;
+        }
+      ];
     };
   };
 

@@ -5,10 +5,10 @@
   inputs,
   ...
 }: let
-  cfg = config.system.temporary;
+  cfg = config.temporary;
 in {
   options = {
-    system.temporary = {
+    temporary = {
       enable = lib.mkEnableOption "Povolení temporary součásti, určené pro vývoj OAVM Linux  ";
     };
   };
@@ -54,10 +54,43 @@ in {
       };
     };
 
+    # services.netbird.clients.wt0 = {
+    #   # Automatically login to your Netbird network with a setup key
+    #   # This is mostly useful for server computers.
+    #   # For manual setup instructions, see the wiki page section below.
+    #   login = {
+    #     enable = true;
+
+    #     # Path to a file containing the setup key for your peer
+    #     # NOTE: if your setup key is reusable, make sure it is not copied to the Nix store.
+    #     setupKeyFile = "/path/to/your/setup-key";
+    #   };
+
+    #   # Port used to listen to wireguard connections
+    #   port = 51821;
+
+    #   # Set this to true if you want the GUI client
+    #   ui.enable = false;
+
+    #   # This opens ports required for direct connection without a relay
+    #   openFirewall = true;
+
+    #   # This opens necessary firewall ports in the Netbird client's network interface
+    #   openInternalFirewall = true;
+    # };
+
+    services.netbird.enable = true; # for netbird service & CLI
+
     environment.systemPackages = with pkgs; [
       #wpa_supplicant_gui
       mediawriter
       discord
+      ventoy-full-qt
+      inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.netbird-ui
+    ];
+
+    nixpkgs.config.permittedInsecurePackages = [
+      "ventoy-qt5-1.1.10"
     ];
 
     # # VirtualBox additions - potřebné pro virtualizaci

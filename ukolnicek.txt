@@ -33,8 +33,9 @@ To je:
 -configy programů co vyžadují home manger 
 -kdyžtak přidat něco dalšího xd
 
-Hotové (nejspíš :D)
+HOTOVÉ (nejspíš :D)
 vlc/haruna
+audacity
 midnight commander
 kdenlive
 gimp + inkscape

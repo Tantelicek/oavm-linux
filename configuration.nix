@@ -23,7 +23,6 @@ in {
   system.info.enable = true;
   system.flatpak.enable = true;
   system.users.enable = true;
-  system.temporary.enable = true;
 
   # Povoluje KDE Plasmu jako desktop a SDDM jako login/desktop manager
   services.displayManager.sddm.enable = true;
@@ -84,6 +83,7 @@ in {
     gimp-with-plugins
     inkscape-with-extensions
     kdePackages.kdenlive
+    inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.audacity
     haruna
     vlc
 
@@ -110,6 +110,10 @@ in {
     nerd-fonts.arimo
     nerd-fonts.dejavu-sans-mono
   ];
+
+  # Povolení appimage souborů
+  programs.appimage.enable = true;
+  programs.appimage.binfmt = true;
 
   # systemd.services.home-manager-student.serviceConfig = { RemainAfterExit = "yes"; };
 
