@@ -44,6 +44,12 @@ in {
 
   home.enableNixpkgsReleaseCheck = false;
 
+  imports = [
+    ./modules/homeManager
+    ./modules/homeManager/desktopEntries
+    ./modules/homeManager/plasmaManager
+  ];
+
   #xdg.configFile."/home/student/.gtkrc-2.0".force = true;
   #home.file."/home/student/.gtkrc-2.0".force = true;
 

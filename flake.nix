@@ -14,9 +14,10 @@
         # Import klasického configuration.nix, jeho nastavení tak stále platí
         ./configuration.nix
         ./hardware/dominik-pc/hardware-configuration.nix
+        ./modules/temporary
         #(import ./overlays)
 
-        {temporary.enable = false;}
+        {temporary.enable = true;}
 
         inputs.home-manager.nixosModules.home-manager
         {

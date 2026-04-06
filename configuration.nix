@@ -8,13 +8,12 @@
 }: let
 in {
   imports = [
-    ./modules/basics
-    ./modules/network
-    ./modules/stylix
-    ./modules/info
-    ./modules/flatpak
-    ./modules/users
-    ./modules/temporary
+    ./modules/system/basics
+    ./modules/system/network
+    ./modules/system/stylix
+    ./modules/system/info
+    ./modules/system/flatpak
+    ./modules/system/users
   ];
 
   system.basics.enable = true;
