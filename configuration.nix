@@ -81,7 +81,6 @@ in {
     #Grafika + video
     gimp-with-plugins
     inkscape-with-extensions
-    kdePackages.kdenlive
     inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.audacity
     haruna
     vlc

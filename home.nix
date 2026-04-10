@@ -45,10 +45,16 @@ in {
   home.enableNixpkgsReleaseCheck = false;
 
   imports = [
-    ./modules/homeManager
+    #./modules/homeManager
     ./modules/homeManager/desktopEntries
+    #./modules/homeManager/plasmaManager
+
     ./modules/homeManager/plasmaManager
   ];
+
+  hm.desktopEntries.enable = true;
+
+  pm.enable = true;
 
   #xdg.configFile."/home/student/.gtkrc-2.0".force = true;
   #home.file."/home/student/.gtkrc-2.0".force = true;
@@ -97,7 +103,7 @@ in {
 
     workspace = {
       clickItemTo = "select";
-      lookAndFeel = "org.kde.breezedark.desktop";
+      lookAndFeel = "stylix";
       cursor = {
         theme = "breeze_cursors";
         size = 24;
@@ -213,6 +219,7 @@ in {
               font.family = "DeepMind Sans";
             };
           }
+          "org.kde.plasma.showdesktop"
         ];
       }
     ];
@@ -251,7 +258,7 @@ in {
     };
 
     kscreenlocker = {
-      lockOnResume = true;
+      lockOnResume = false;
       timeout = 10;
     };
 
@@ -289,10 +296,5 @@ in {
     };
   };
 
-  # Konfigurace .desktop souborů
-
-  # xdg.desktopEntries = {
-
-  # };
 
 }
