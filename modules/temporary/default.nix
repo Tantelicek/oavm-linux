@@ -87,6 +87,7 @@ in {
       discord
       ventoy-full-qt
       inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.netbird-ui
+      kdePackages.kcolorchooser
     ];
 
     nixpkgs.config.permittedInsecurePackages = [
