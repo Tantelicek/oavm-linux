@@ -53,6 +53,7 @@ in {
     unzip
     mission-center
     inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.fastfetch
+    notify-desktop
 
     #VScode
     vscode-fhs
@@ -129,6 +130,7 @@ in {
     clean.extraArgs = "--keep-since 7d --keep 3";
     flake = "/home/student/oavm-linux/oavm-linux"; # sets NH_OS_FLAKE variable for you
   };
+
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

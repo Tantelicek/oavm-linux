@@ -101,6 +101,16 @@ in {
     enable = true;
     overrideConfig = true;
 
+    #startup.desktopScript.notifikace.postCommands = ''notify-desktop -t 20000 --app-name=OAVM-Linux --icon=/home/student/smiley.png "Vítej v OAVM Linuxu" "Tento systém běží jako live-iso, takže si vše ulož na OneDrive před tím, než vypneš PC! Doufáme, že se ti v tomto systému bude líbit. S pozdravem Dominik a Honza."'';
+
+    startup.startupScript = {
+      uvod = {
+        priority = 6;
+        runAlways = true;
+        text = ''notify-desktop -t 20000 --app-name=OAVM-Linux --icon=/home/student/smiley.png "Vítej v OAVM Linuxu" "Tento systém běží jako live-iso, takže si vše ulož na OneDrive před tím, než vypneš PC! Doufáme, že se ti v tomto systému bude líbit. S pozdravem Dominik a Honza."'';
+      };
+    };
+
     workspace = {
       clickItemTo = "select";
       lookAndFeel = "stylix";
@@ -219,7 +229,7 @@ in {
               font.family = "DeepMind Sans";
             };
           }
-          "org.kde.plasma.showdesktop"
+          "org.kde.plasma.minimizeall"
         ];
       }
     ];
