@@ -15,6 +15,7 @@
         ./configuration.nix
         ./hardware/dominik-pc/hardware-configuration.nix
         ./modules/temporary
+        ./modules/temporary/netboot.nix
         #(import ./overlays)
 
         {temporary.enable = true;}
