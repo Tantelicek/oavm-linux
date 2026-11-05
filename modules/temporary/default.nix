@@ -15,21 +15,21 @@ in {
 
   config = lib.mkIf cfg.enable {
     # Load nvidia driver for Xorg and Wayland
-    services.xserver.videoDrivers = ["nvidia"];
+    services.xserver.videoDrivers = [
+      "nvidia"
+      "modesetting"
+    ];
 
     hardware.nvidia = {
       # Modesetting is required.
       modesetting.enable = true;
 
-      # Nvidia power management. Experimental, and can cause sleep/suspend to fail.
-      # Enable this if you have graphical corruption issues or application crashes after waking
-      # up from sleep. This fixes it by saving the entire VRAM memory to /tmp/ instead
-      # of just the bare essentials.
-      powerManagement.enable = false;
+      prime = {
+        offload.enable = true;
 
-      # Fine-grained power management. Turns off GPU when not in use.di
-      # Experimental and only works on modern Nvidia GPUs (Turing or newer).
-      powerManagement.finegrained = false;
+        nvidiaBusId = "PCI:1@0:0:0";
+        amdgpuBusId = "PCI:5@0:0:0";
+      };
 
       # Use the NVidia open source kernel module (not to be confused with the
       # independent third-party "nouveau" open source driver).
@@ -37,7 +37,7 @@ in {
       # supported GPUs is at:
       # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus
       # Only available from driver 515.43.04+
-      open = false;
+      open = true;
 
       # Enable the Nvidia settings menu,
       # accessible via `nvidia-settings`.
@@ -45,11 +45,11 @@ in {
 
       # Optionally, you may need to select the appropriate driver version for your specific GPU.
       package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
-        version = "590.48.01";
-        sha256_64bit = "sha256-ueL4BpN4FDHMh/TNKRCeEz3Oy1ClDWto1LO/LWlr1ok=";
+        version = "610.57.04";
+        sha256_64bit = "sha256-suk1xmuDuwDAyFe8jg7g/VLekoa0DJzB7sKafOfrEW0=";
         sha256_aarch64 = "";
-        openSha256 = "";
-        settingsSha256 = "sha256-NWsqUciPa4f1ZX6f0By3yScz3pqKJV1ei9GvOF8qIEE=";
+        openSha256 = "sha256-rQHOOOY4KL92Ww3KDwh+j4eGU7oNAH8LutZC5wmFnPo=";
+        settingsSha256 = "sha256-ZEMo8I8Zc2Tq6RVDNYpAH+f094dUaZiBqO+5f6lIjRI=";
         persistencedSha256 = "";
       };
     };
@@ -79,7 +79,9 @@ in {
     #   openInternalFirewall = true;
     # };
 
-    services.netbird.enable = true; # for netbird service & CLI
+  
+      services.netbird.enable = true;
+
 
     environment.systemPackages = with pkgs; [
       #wpa_supplicant_gui
@@ -88,11 +90,24 @@ in {
       ventoy-full-qt
       inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.netbird-ui
       kdePackages.kcolorchooser
+      localsend
+      gnome-disk-utility
+      obsidian
+      qbittorrent
+      moonlight-qt
     ];
 
     nixpkgs.config.permittedInsecurePackages = [
       "ventoy-qt5-1.1.10"
     ];
+
+    programs.steam = {
+      enable = true; # Master switch, already covered in installation
+      remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+      dedicatedServer.openFirewall = true;
+      extraCompatPackages = with pkgs; [inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.proton-ge-bin]; # Open ports for Source Dedicated Server hosting
+      # Other general flags if available can be set here.
+    };
 
     # # VirtualBox additions - potřebné pro virtualizaci
     # virtualisation.virtualbox.guest.enable = true;
