@@ -9,16 +9,17 @@
       "formatting": {
         "command": [ "alejandra" ], // or nixfmt or nixpkgs-fmt
       },
-      // "options": {
-      //    "nixos": {
-      //      "expr": "(builtins.getFlake \"/PATH/TO/FLAKE\").nixosConfigurations.CONFIGNAME.options"
-      //    },
-      //    "home_manager": {
-      //      "expr": "(builtins.getFlake \"/PATH/TO/FLAKE\").homeConfigurations.CONFIGNAME.options"
-      //    },
-      // },
+      "options": {
+         "nixos": {
+           "expr": "(builtins.getFlake \"/home/student/oavm-linux/oavm-linux/flake.nix\").nixosConfigurations.oavm-linux-d.options"
+         },
+         "home_manager": {
+           "expr": "(builtins.getFlake \"/home/student/oavm-linux/oavm-linux/flake.nix\").homeConfigurations.oavm-linux-d.options"
+         },
+      },
     }
   },
   "security.workspace.trust.untrustedFiles": "open",
-  "git.autofetch": true
+  "git.autofetch": true,
+  "nix.formatterPath": "alejandra"
 }
